@@ -3,6 +3,9 @@ class Fourmi:
 
         self.posX 
         self.posY
+        self.noeudVisite = []
+        self.data = []
+        
         pass
 
     '''
@@ -12,10 +15,10 @@ class Fourmi:
     a: defini l'influence des pheromones sur le choix du prochain chemin
     s: point initial
     t: point final
+    k: fourmis
     '''
     def Initialize(self,G, s):
-        
-
+    
         pass
 
     def SelectNextEdge(self, i, k):
