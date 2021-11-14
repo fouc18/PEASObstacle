@@ -5,6 +5,16 @@ from Fourmis import Fourmi
 
 class Start:
 
+    def __init__(self, ROWS, WIDTH):
+        self.ROWS = ROWS
+        self.WIDTH = WIDTH
+        self.win = pygame.display.set_mode((WIDTH, WIDTH))
+        self.grid_c = Grid()
+        self.grid = self.grid_c.make_grid(ROWS, WIDTH)
+        self.start = None
+        self.end = None
+        
+
 
     def getStart(self,start):
         
@@ -12,65 +22,60 @@ class Start:
 
         print(start.row)
 
+    def x(self):
+        print("test")
 
 
-    def start(self):
-        ROWS = 50
-        WIDTH = 800
-        win = pygame.display.set_mode((WIDTH, WIDTH))
-        grid_c = Grid()
-        grid = grid_c.make_grid(ROWS, WIDTH)
 
-        start = None
-        end = None
+    def funcStart(self):
 
         run = True
         while run:
-            grid_c.draw(win, grid, ROWS, WIDTH)
+            self.grid_c.draw(self.win, self.grid, self.ROWS, self.WIDTH)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
 
                 if pygame.mouse.get_pressed()[0]:  # LEFT
                     pos = pygame.mouse.get_pos()
-                    row, col = grid_c.get_clicked_pos(pos, ROWS, WIDTH)
-                    spot = grid[row][col]
-                    if not start and spot != end:
+                    row, col = self.grid_c.get_clicked_pos(pos, self.ROWS, self.WIDTH)
+                    spot = self.grid[row][col]
+                    if not self.start and spot != self.end:
                         
-                        start = spot
-                        self.getStart(spot)
-                        start.make_start()
+                        self.start = spot
+                        #self.getStart(spot)
+                        self.start.make_start()
                     
                         
 
-                    elif not end and spot != start:
-                        end = spot
-                        end.make_end()
+                    elif not self.end and spot != self.start:
+                        self.end = spot
+                        self.end.make_end()
 
-                    elif spot != end and spot != start:
+                    elif spot != self.end and spot != self.start:
                         spot.make_barrier()
 
                 elif pygame.mouse.get_pressed()[2]:  # RIGHT
                     pos = pygame.mouse.get_pos()
-                    row, col = grid_c.get_clicked_pos(pos, ROWS, WIDTH)
-                    spot = grid[row][col]
+                    row, col = self.grid_c.get_clicked_pos(pos, self.ROWS, self.WIDTH)
+                    spot = self.grid[row][col]
                     spot.reset()
-                    if spot == start:
-                        start = None
-                    elif spot == end:
-                        end = None
+                    if spot == self.start:
+                        self.start = None
+                    elif spot == self.end:
+                        self.end = None
 
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_SPACE and start and end:
-                        for row in grid:
+                    if event.key == pygame.K_SPACE and self.start and self.end:
+                        for row in self.grid:
                             for spot in row:
-                                spot.update_neighbors(grid)
+                                spot.update_neighbors(self.grid)
 
-                        algo.algorithm(lambda: grid_c.draw(win, grid, ROWS, WIDTH), grid, start, end)
+                        algo.algorithm(lambda: self.grid_c.draw(self.win, self.grid, self.ROWS, self.WIDTH), self.grid, self.start, self.end)
 
                     if event.key == pygame.K_c:
-                        start = None
-                        end = None
-                        grid = Grid.make_grid(ROWS, WIDTH)
+                        self.start = None
+                        self.end = None
+                        self.grid = Grid.make_grid(self.ROWS, self.WIDTH)
 
         pygame.quit()

@@ -25,10 +25,10 @@ class Spot:
         self.pheromone = 0
         self.visited = False
         #Ajouter le cout de tous les spots
-        self.cost = 0
+        self.cost = 1
 
     def __str__(self): 
-        return 'From str method of Test: a is %s and %a ' %(self.row, self.col)
+        return 'xPos de la fourmis %s et Ypos de la fourmis %a ' %(self.row, self.col)
 
     def get_pos(self):
         return self.row, self.col
@@ -92,17 +92,23 @@ class Spot:
 
 
 class Grid:
+
+    def __init__(self):
+        self.grid = []
+        
+
+
     def make_grid(self, rows, width):
-        grid = []
+        self.grid = []
         gap = width // rows
         for i in range(rows):
-            grid.append([])
+            self.grid.append([])
             for j in range(rows):
                 spot = Spot(i, j, gap, rows)
-                grid[i].append(spot)
+                self.grid[i].append(spot)
                
-
-        return grid
+        
+        return self.grid
 
     def draw_grid(self, win, rows, width):
         gap = width // rows
@@ -131,4 +137,6 @@ class Grid:
         return row, col
 
     def __str__(self): 
-        return "From str method of Test: a is % s,b is % s" % (self.Spot)
+        return "Position d'un noeud a% " % (self.Spot.row)
+
+    

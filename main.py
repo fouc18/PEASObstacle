@@ -1,11 +1,25 @@
 import pygame
 from Start import Start
-import Fourmis
+from Fourmis import Fourmi
+from algo import Algo
 
 
-start = Start()
+interface = Start(20,800)
 
-start.start()
+interface.funcStart()
+
+ant = Fourmi(interface.start, interface.end)
+
+algo = Algo()
+
+algo.Initialize(interface.grid, interface.start)
+
+
+
+
+
+
+
 
 
 
