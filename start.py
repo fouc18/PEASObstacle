@@ -6,8 +6,6 @@ from Fourmis import Fourmi
 class Start:
 
 
-   
-
     def getStart(self,start):
         
         fourmis = Fourmi(start.col, start.row)

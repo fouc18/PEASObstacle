@@ -22,6 +22,8 @@ class Spot:
         self.neighbors = []
         self.width = width
         self.total_rows = total_rows
+        self.pheromone = 0
+        self.visited = False
 
     def __str__(self): 
         return 'From str method of Test: a is %s and %a ' %(self.row, self.col)
