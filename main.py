@@ -12,6 +12,9 @@ ant = Fourmi(interface.start, interface.end)
 
 algo = Algo()
 
+#Creer une liste de fourmis
+#
+
 algo.Initialize(interface.grid, interface.start)
 
 
