@@ -1,5 +1,22 @@
 import pygame
-from start import start
+from Start import Start
+import Fourmis
 
 
-start()
+start = Start()
+
+start.start()
+
+
+
+
+
+
+
+
+
+
+
+
+
+

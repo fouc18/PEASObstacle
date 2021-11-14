@@ -23,6 +23,9 @@ class Spot:
         self.width = width
         self.total_rows = total_rows
 
+    def __str__(self): 
+        return 'From str method of Test: a is %s and %a ' %(self.row, self.col)
+
     def get_pos(self):
         return self.row, self.col
 
@@ -45,6 +48,7 @@ class Spot:
         self.color = WHITE
 
     def make_start(self):
+    
         self.color = ORANGE
 
     def make_closed(self):
@@ -92,6 +96,7 @@ class Grid:
             for j in range(rows):
                 spot = Spot(i, j, gap, rows)
                 grid[i].append(spot)
+               
 
         return grid
 
@@ -120,3 +125,6 @@ class Grid:
         col = x // gap
 
         return row, col
+
+    def __str__(self): 
+        return "From str method of Test: a is % s,b is % s" % (self.Spot)

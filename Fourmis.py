@@ -1,12 +1,12 @@
 class Fourmi:
-    def __init__(self):
+    def __init__(self, posX, posY):
 
-        self.posX 
-        self.posY
+        self.posX = posX
+        self.posY = posY
         self.noeudVisite = []
         self.data = []
         
-        pass
+        
 
     '''
     E/: Chemin de s a t
@@ -29,12 +29,23 @@ class Fourmi:
         pass
 
     def getPos(self):
-
         return [self.posX, self.posY] 
 
-    def setPos(self, posX, posY):
-        self.posX = posX
-        self.posY = posY
+    def Reset(graphe, fourmis):
+        pass
+
+    def setRun(fourmi):
+        pass
+
+    def setNode(fourmi, s):
+        pass
+    def setVisited(fourmi, s):
+        pass
+    
+    def add(list, time, fourmi):
+        pass
+
+    
 
 
     def move(self):
