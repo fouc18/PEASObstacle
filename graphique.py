@@ -24,6 +24,8 @@ class Spot:
         self.total_rows = total_rows
         self.pheromone = 0
         self.visited = False
+        #Ajouter le cout de tous les spots
+        self.cost = 0
 
     def __str__(self): 
         return 'From str method of Test: a is %s and %a ' %(self.row, self.col)
