@@ -28,7 +28,7 @@ class Spot:
         self.cost = 1
 
     def __str__(self): 
-        return 'xPos de la fourmis %s et Ypos de la fourmis %a ' %(self.row, self.col)
+        return '%s, %a ' %(self.row, self.col)
 
     def get_pos(self):
         return self.row, self.col
@@ -38,6 +38,10 @@ class Spot:
 
     def is_open(self):
         return self.color == GREEN
+
+    def make_fourmis(self):
+        self.width = self.width // 2
+        return self.col == GREEN
 
     def is_barrier(self):
         return self.color == BLACK
@@ -73,20 +77,7 @@ class Spot:
     def draw(self, win):
         pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.width))
 
-    def update_neighbors(self, grid):
-        self.neighbors = []
-        if self.row < self.total_rows - 1 and not grid[self.row + 1][self.col].is_barrier():  # DOWN
-            self.neighbors.append(grid[self.row + 1][self.col])
-
-        if self.row > 0 and not grid[self.row - 1][self.col].is_barrier():  # UP
-            self.neighbors.append(grid[self.row - 1][self.col])
-
-        if self.col < self.total_rows - 1 and not grid[self.row][self.col + 1].is_barrier():  # RIGHT
-            self.neighbors.append(grid[self.row][self.col + 1])
-
-        if self.col > 0 and not grid[self.row][self.col - 1].is_barrier():  # LEFT
-            self.neighbors.append(grid[self.row][self.col - 1])
-
+    
     def __lt__(self, other):
         return False
 
@@ -94,9 +85,10 @@ class Spot:
 class Grid:
 
     def __init__(self):
+     
         self.grid = []
-        
-
+    
+    
 
     def make_grid(self, rows, width):
         self.grid = []

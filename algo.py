@@ -41,7 +41,7 @@ class Algo:
         
         #??? lenght = C(V-1)
         time = 0
-        for fourmis in self.listeFourmis:
+        for fourmis in range(len(self.listeFourmis)):
 
             self.reset(grid, self.listeFourmis[fourmis])
             self.setRun(self.listeFourmis[fourmis])
@@ -56,25 +56,26 @@ class Algo:
 
     return: Le prochain noeud choisi
     """
-    def SelectNextEdge(self, noeud, fourmis, graphe):
+    def SelectNextEdge(self, noeud, fourmis):
         #Verifi si le prochain noeud n'est pas en dehors du tableau
         if noeud == None:
              return None
         else:
             best = -1
             result = None
-            for noeud in graphe:
-                #Si le noeud n'a pas encore ete visite
-                if graphe.spot[noeud].visited == False:
+            
+            for voisin in fourmis.getVoisins():
+            #Si le noeud n'a pas encore ete visite
+                if noeud.visited == False:
                     self.ComputeCoefficient(noeud, fourmis)
 
-                    #Si le noeud est la meilleure option
-                    if graphe.spot[noeud] > best:
-                        best = graphe.spot[noeud]
-                        result = graphe.spot[noeud].getPos()
+                        #Si le noeud est la meilleure option
+                    if noeud > best:
+                        best = noeud
+                        result = noeud.getPos()
 
-                    elif graphe.spot[noeud] == best and random.uniform(0,1) > 0.5:
-                        result = graphe.spot[noeud].getPos()
+                    elif noeud == best and random.uniform(0,1) > 0.5:
+                        result = noeud.getPos()
 
         return result
 
@@ -125,11 +126,10 @@ class Algo:
     # s est un tableau [posX, posY]
     def setNode(self,fourmi, s):
 
-        self.posX, self.posY = s
+        self.posX, self.posY = s.row, s.col
     
     #Insere le noeud de depart dans la liste des noeuds visites
     def setVisited(self,fourmis, s):
-
         fourmis.noeudVisite.append(s)
     
     #Ajoute la fourmis a la liste de toutes les fourmis

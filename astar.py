@@ -40,6 +40,10 @@ class Spot:
 	def is_barrier(self):
 		return self.color == BLACK
 
+	def is_fourmis(self):
+		self.width = self.width // 2
+		return self.color == YELLOW
+
 	def is_start(self):
 		return self.color == ORANGE
 

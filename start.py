@@ -13,6 +13,7 @@ class Start:
         self.grid = self.grid_c.make_grid(ROWS, WIDTH)
         self.start = None
         self.end = None
+     
         
 
 
@@ -43,8 +44,11 @@ class Start:
                     if not self.start and spot != self.end:
                         
                         self.start = spot
+                        self.fourmis = spot
+                        
                         #self.getStart(spot)
                         self.start.make_start()
+                        #self.fourmis.make_fourmis()
                     
                         
 
@@ -71,7 +75,8 @@ class Start:
                             for spot in row:
                                 spot.update_neighbors(self.grid)
 
-                        algo.algorithm(lambda: self.grid_c.draw(self.win, self.grid, self.ROWS, self.WIDTH), self.grid, self.start, self.end)
+                        #algo.algorithm(lambda: self.grid_c.draw(self.win, self.grid, self.ROWS, self.WIDTH), self.grid, self.start, self.end)
+                        
 
                     if event.key == pygame.K_c:
                         self.start = None
