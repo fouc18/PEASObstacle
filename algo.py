@@ -11,8 +11,9 @@ class Algo:
 
         self.listeFourmis = []
         #Doit etre compris entre 0 et 1
-        self.influenceDesPheromones = 0.7
+        self.influenceDesPheromones = 0.2
         self.addData = 0.5
+        self.pheromone = 2
         
 
 
@@ -64,18 +65,19 @@ class Algo:
             best = -1
             result = None
             
-            for voisin in fourmis.getVoisins():
+            for noeud in range(len(fourmis.listeVoisins)):
             #Si le noeud n'a pas encore ete visite
-                if noeud.visited == False:
-                    self.ComputeCoefficient(noeud, fourmis)
 
-                        #Si le noeud est la meilleure option
-                    if noeud > best:
-                        best = noeud
-                        result = noeud.getPos()
+                if fourmis.listeVoisins[noeud] != None and fourmis.listeVoisins[noeud].visited == False:
+                    current = self.ComputeCoefficient(fourmis.listeVoisins[noeud], fourmis)
 
-                    elif noeud == best and random.uniform(0,1) > 0.5:
-                        result = noeud.getPos()
+                    #Si le noeud est la meilleure option
+                    if current > best:
+                        best = current
+                        result = fourmis.listeVoisins[noeud]
+
+                    elif current == best and random.uniform(0,1) > 0.9:
+                        result = fourmis.listeVoisins[noeud]
 
         return result
 
@@ -84,27 +86,30 @@ class Algo:
     def computeLenght(self, fourmi):
         return sum(fourmi.noeudVisite.cost)
 
-    def calculEdgeCoefficient_prime(self, totalDesNoeud):
-        return totalDesNoeud**self.influenceDesPheromones
+    def calculEdgeCoefficient_prime(self):
+        return self.influenceDesPheromones
 
     #Verifie la quantite de pheromone sur un noeud en prennant en compte
     #L'infleunce des pheromones et les donnees additionnelle
-    def calculEdgeCoefficient(self, grid):
-        return (grid.spot.pheromone*self.influenceDesPheromones)*self.addData
+    def calculEdgeCoefficient(self, noeud):
+        if noeud.visited == False:
+            return (self.pheromone * self.influenceDesPheromones)*(1+self.addData)
+        else:
+            return (self.pheromone * self.influenceDesPheromones)
 
 
     """
     Prends en entre un noeud et une fourmis et retourne le coefficient du chemin
     """
-    def ComputeCoefficient(self,graphe,fourmis):
+    def ComputeCoefficient(self,noeud,fourmis):
         #Si le noeud n'a pas de pheromones, en ajouter 
-        if graphe.Spot.pheromone == 0:
-            return self.calculEdgeCoefficientPrime(self(fourmis))
+        if noeud.pheromone == 0:
+            return self.calculEdgeCoefficient_prime()
         else:
-            if len(fourmis.getRun) > 3:
+            if len(fourmis.getRun) > 6:
                 return 0
             else:
-                return self.calculEdgeCoefficient
+                return self.calculEdgeCoefficient(noeud)
 
     def EvaporateOfShortestPath(self,i,j):
         pass

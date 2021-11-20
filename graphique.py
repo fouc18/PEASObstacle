@@ -16,6 +16,7 @@ class Spot:
     def __init__(self, row, col, width, total_rows):
         self.row = row
         self.col = col
+        
         self.x = row * width
         self.y = col * width
         self.color = WHITE
@@ -40,7 +41,7 @@ class Spot:
         return self.color == GREEN
 
     def make_fourmis(self):
-        self.width = self.width // 2
+        
         return self.col == GREEN
 
     def is_barrier(self):

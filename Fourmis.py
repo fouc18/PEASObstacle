@@ -8,11 +8,13 @@ class Fourmi:
         self.data = []
         self.deltaT = 1
         self.listePheromone = 0
-        self.listeVoisin = []
+        self.listeVoisins = []
+        
  
-    def move(self, pos):
-        self.posX = pos[0]
-        self.posY = pos[1]
+    def move(self, noeud):
+
+        self.posX, self.posY = noeud.row, noeud.col
+        
 
     def getRun(self):
         return self.noeudVisite
@@ -22,30 +24,30 @@ class Fourmi:
         
         #Voisin de droite
         if self.posX + 1 >= gridWith:
-            self.listeVoisin.append(None)
+            self.listeVoisins.append(None)
         else:
-            self.listeVoisin.append(grid[self.posX+1][self.posY])
+            self.listeVoisins.append(grid[self.posX+1][self.posY])
 
         #Voisin de gauche
         if self.posX-1 <  0:
-            self.listeVoisin.append(None)
+            self.listeVoisins.append(None)
         else:
-            self.listeVoisin.append(grid[self.posX-1][self.posY])
+            self.listeVoisins.append(grid[self.posX-1][self.posY])
 
         #Voisin d'en bas
         if self.posY-1 < 0:
-            self.listeVoisin.append(None)
+            self.listeVoisins.append(None)
         else:
-            self.listeVoisin.append(grid[self.posX][ self.posY-1])
+            self.listeVoisins.append(grid[self.posX][ self.posY-1])
 
         #Voisin d'en haut
         if self.posY+1 >= gridWith:
-            self.listeVoisin.append(None)
+            self.listeVoisins.append(None)
         else:
-            self.listeVoisin.append(grid[self.posX][self.posY+1])
+            self.listeVoisins.append(grid[self.posX][self.posY+1])
 
     def printVoisin(self):
-        for voisin in self.listeVoisin :
+        for voisin in self.listeVoisins :
             print(voisin)
             
 

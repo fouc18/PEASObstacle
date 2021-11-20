@@ -1,6 +1,6 @@
 import pygame
 from graphique import Grid
-import algo
+from algo import Algo
 from Fourmis import Fourmi
 
 class Start:
@@ -71,12 +71,34 @@ class Start:
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE and self.start and self.end:
-                        for row in self.grid:
-                            for spot in row:
-                                spot.update_neighbors(self.grid)
+                        #for row in self.grid:
+                            #for spot in row:
+                             #   spot.update_neighbors(self.grid)
 
-                        #algo.algorithm(lambda: self.grid_c.draw(self.win, self.grid, self.ROWS, self.WIDTH), self.grid, self.start, self.end)
-                        
+                        ant = Fourmi(self.start)
+                        algo = Algo()
+                        algo.listeFourmis.append(ant)
+
+                        #Creer une liste de fourmis
+                        algo.Initialize(self.grid, self.start)
+
+                        #print(ant.posX)
+                        ant.getVoisins(self.WIDTH, self.grid)
+
+                        while(algo.listeFourmis[0].posX != self.end.col) and (algo.listeFourmis[0].posY != self.end.row):
+
+                            for fourmi in range(len(algo.listeFourmis)):
+                                
+                                bestNode = algo.SelectNextEdge(algo.listeFourmis[fourmi].getVoisins, algo.listeFourmis[fourmi])
+                            print("position de la fourmis",algo.listeFourmis[0].posX, algo.listeFourmis[0].posY) 
+                            print("position du meilleur noeud", bestNode.col, bestNode.row)
+
+                            algo.listeFourmis[0].move(bestNode)
+                            
+                            #self.grid[bestNode.col][bestNode.row].make_fourmis()
+                            
+                            #algo.algorithm(lambda: self.grid_c.draw(self.win, self.grid, self.ROWS, self.WIDTH), self.grid, self.start, self.end)
+
 
                     if event.key == pygame.K_c:
                         self.start = None
