@@ -11,8 +11,8 @@ class Algo:
 
         self.listeFourmis = []
         #Doit etre compris entre 0 et 1
-        self.influenceDesPheromones = 0.2
-        self.addData = 0.5
+        self.influenceDesPheromones = 100
+        self.addData = 0
         self.pheromone = 2
         
 
@@ -76,7 +76,7 @@ class Algo:
                         best = current
                         result = fourmis.listeVoisins[noeud]
 
-                    elif current == best and random.uniform(0,1) > 0.7:
+                    elif current == best and random.uniform(0,1) > 0.50:
                         result = fourmis.listeVoisins[noeud]
 
         return result
@@ -87,15 +87,15 @@ class Algo:
         return sum(fourmi.noeudVisite.cost)
 
     def calculEdgeCoefficient_prime(self):
-        return self.influenceDesPheromones
+        return (1 //(self.influenceDesPheromones))**self.influenceDesPheromones
 
     #Verifie la quantite de pheromone sur un noeud en prennant en compte
     #L'infleunce des pheromones et les donnees additionnelle
     def calculEdgeCoefficient(self, noeud):
         if noeud.visited == False:
-            return (self.pheromone * self.influenceDesPheromones)*(1+self.addData)
+            return (noeud.pheromone * self.influenceDesPheromones)*(1+self.addData)
         else:
-            return (self.pheromone * self.influenceDesPheromones)
+            return (noeud.pheromone * self.influenceDesPheromones)
 
 
     """
@@ -106,7 +106,7 @@ class Algo:
         if noeud.pheromone == 0:
             return self.calculEdgeCoefficient_prime()
         else:
-            if len(fourmis.getRun) > 2:
+            if len(fourmis.getRun()) > 5:
                 return 0
             else:
                 return self.calculEdgeCoefficient(noeud)

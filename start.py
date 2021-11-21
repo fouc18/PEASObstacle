@@ -14,17 +14,16 @@ class Start:
         self.grid = self.grid_c.make_grid(ROWS, WIDTH)
         self.start = None
         self.end = None
+        self.compte = 0
      
         
     def getStart(self,start):
         
         fourmis = Fourmi(start.col, start.row)
 
-        print(start.row)
+        
 
-    def x(self):
-        print("test")
-
+    
 
     def funcStart(self):
 
@@ -78,44 +77,63 @@ class Start:
 
                         ant = Fourmi(self.start)
                         algo = Algo()
-                        algo.listeFourmis.append(ant)
-
+                        
+                        
+                        
                         #Creer une liste de fourmis
                         algo.Initialize(self.grid, self.start)
-                        print("fourmi run", algo.listeFourmis[0].noeudVisite)
+                        #print("fourmi run", algo.listeFourmis[0].noeudVisite)
                         #print(ant.posX)
                        # ant.getVoisins(self.WIDTH, self.grid)
-                        
-
-                        while algo.listeFourmis[0].getPosX() != self.end.getXpos() or algo.listeFourmis[0].getPosY() != self.end.getYpos():
-                            
-                            
-                            algo.listeFourmis[0].getVoisins(self.ROWS, self.grid)
-                            for fourmi in range(len(algo.listeFourmis)):
+                        for i in range(200):
+                           
+                           
+                            for row in range(len(self.grid)):
                                 
-                                bestNode = algo.SelectNextEdge(algo.listeFourmis[0].getListeVoisins(), algo.listeFourmis[fourmi])
-                            print("position de la fourmis",algo.listeFourmis[0].posX, algo.listeFourmis[0].posY) 
-                            print("position du meilleur noeud", bestNode.col, bestNode.row)
-                            
-                            algo.listeFourmis[0].move(bestNode)
-                            algo.listeFourmis[0].listeVoisins.clear()
-                            print("liste voisins",algo.listeFourmis[0].listeVoisins)
+                                for col in range(len(self.grid)):
+                                    if self.grid[row][col] != self.start or self.grid[row][col] != self.end:
+                                        self.grid[row][col].reset()
+                            #time.sleep(0.005)
+                                
+                            ant = Fourmi(self.start)
+                            algo.listeFourmis.append(ant)
 
-                            algo.setVisited(algo.listeFourmis[0],bestNode)
-                            print("best node", bestNode)
-                            print("nouvelle position de la fourmis", algo.listeFourmis[0].posX, algo.listeFourmis[0].posY)
-                            spotFourmis = self.grid[algo.listeFourmis[0].posX][algo.listeFourmis[0].posY] 
-                            spotFourmis.make_fourmis()
-                            print(spotFourmis.color)
-                            self.grid_c.draw(self.win, self.grid, self.ROWS, self.WIDTH)
-                            #self.grid[bestNode.col][bestNode.row].make_fourmis()
-                            print(self.ROWS)
-                            #ime.sleep(2)
-                            #algo.algorithm(lambda: self.grid_c.draw(self.win, self.grid, self.ROWS, self.WIDTH), self.grid, self.start, self.end)
-                        print("FINI !")
-                        
-                        print("position de la fourmis",algo.listeFourmis[0].posX, algo.listeFourmis[0].posY) 
-                        print(self.end.row, self.end.col)
+                            while algo.listeFourmis[i].getPosX() != self.end.getXpos() or algo.listeFourmis[i].getPosY() != self.end.getYpos():
+                                
+                                
+                                algo.listeFourmis[i].getVoisins(self.ROWS, self.grid)
+                                for fourmi in range(len(algo.listeFourmis)):
+                                    
+                                    bestNode = algo.SelectNextEdge(algo.listeFourmis[i].getListeVoisins(), algo.listeFourmis[fourmi])
+                                
+                                algo.listeFourmis[i].move(bestNode)
+                                bestNode.pheromone = bestNode.pheromone + 1
+                                self.compte = self.compte + 1
+                                algo.listeFourmis[i].listeVoisins.clear()
+                            
+                                algo.setVisited(algo.listeFourmis[i],bestNode)
+                                spotFourmis = self.grid[algo.listeFourmis[i].posX][algo.listeFourmis[i].posY] 
+                                spotFourmis.make_fourmis()
+                                
+                                self.grid_c.draw(self.win, self.grid, self.ROWS, self.WIDTH)
+                                #self.grid[bestNode.col][bestNode.row].make_fourmis()
+                                
+                                #time.sleep(0.05)
+                                
+                                #algo.algorithm(lambda: self.grid_c.draw(self.win, self.grid, self.ROWS, self.WIDTH), self.grid, self.start, self.end)
+                            print("FINI !")
+                            
+                            
+                            print("fourmi run", algo.listeFourmis[i].noeudVisite)
+                            print("compte",self.compte)
+                            print("noeud",len(algo.listeFourmis[i].noeudVisite))
+                            
+                            print(self.end.pheromone)
+
+                            for noeud in range(len(algo.listeFourmis[i].noeudVisite)):
+                                #evaporation des pheromones
+                                algo.listeFourmis[i].noeudVisite[noeud].pheromone = 1 - 0.5
+                            self.compte = 0
                         
 
                     if event.key == pygame.K_c:
