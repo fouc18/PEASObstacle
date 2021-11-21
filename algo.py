@@ -76,7 +76,7 @@ class Algo:
                         best = current
                         result = fourmis.listeVoisins[noeud]
 
-                    elif current == best and random.uniform(0,1) > 0.9:
+                    elif current == best and random.uniform(0,1) > 0.7:
                         result = fourmis.listeVoisins[noeud]
 
         return result
@@ -106,7 +106,7 @@ class Algo:
         if noeud.pheromone == 0:
             return self.calculEdgeCoefficient_prime()
         else:
-            if len(fourmis.getRun) > 6:
+            if len(fourmis.getRun) > 2:
                 return 0
             else:
                 return self.calculEdgeCoefficient(noeud)

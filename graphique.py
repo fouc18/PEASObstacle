@@ -34,6 +34,12 @@ class Spot:
     def get_pos(self):
         return self.row, self.col
 
+    def getXpos(self):
+        return self.row
+    
+    def getYpos(self):
+        return self.col
+
     def is_closed(self):
         return self.color == RED
 
@@ -42,7 +48,7 @@ class Spot:
 
     def make_fourmis(self):
         
-        return self.col == GREEN
+        self.color = GREEN
 
     def is_barrier(self):
         return self.color == BLACK

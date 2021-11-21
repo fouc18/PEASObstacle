@@ -9,11 +9,20 @@ class Fourmi:
         self.deltaT = 1
         self.listePheromone = 0
         self.listeVoisins = []
-        
+    
+    def getPosY(self):
+        return self.posY
+
+    def getPosX(self):
+        return self.posX
  
     def move(self, noeud):
 
-        self.posX, self.posY = noeud.row, noeud.col
+        self.posX = noeud.row
+        self.posY = noeud.col
+
+    def getListeVoisins(self):
+        return self.listeVoisins
         
 
     def getRun(self):
@@ -23,28 +32,28 @@ class Fourmi:
     def getVoisins(self, gridWith, grid):
         
         #Voisin de droite
-        if self.posX + 1 >= gridWith:
-            self.listeVoisins.append(None)
+        if self.getPosX() + 1 > gridWith -1:
+            self.listeVoisins.append(None) 
         else:
             self.listeVoisins.append(grid[self.posX+1][self.posY])
 
         #Voisin de gauche
-        if self.posX-1 <  0:
+        if self.getPosX()-1 <  0:
             self.listeVoisins.append(None)
         else:
             self.listeVoisins.append(grid[self.posX-1][self.posY])
 
         #Voisin d'en bas
-        if self.posY-1 < 0:
+        if self.getPosY()+1 > gridWith -1:
             self.listeVoisins.append(None)
         else:
-            self.listeVoisins.append(grid[self.posX][ self.posY-1])
+            self.listeVoisins.append(grid[self.posX][ self.posY+1])
 
         #Voisin d'en haut
-        if self.posY+1 >= gridWith:
+        if self.getPosY()-1 < 0:
             self.listeVoisins.append(None)
         else:
-            self.listeVoisins.append(grid[self.posX][self.posY+1])
+            self.listeVoisins.append(grid[self.posX][self.posY-1])
 
     def printVoisin(self):
         for voisin in self.listeVoisins :
