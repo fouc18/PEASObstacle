@@ -58,6 +58,10 @@ class Fourmi:
     def printVoisin(self):
         for voisin in self.listeVoisins :
             print(voisin)
+
+    def getListeNoeudVisite(self):
+
+        return self.getListeNoeudVisite
             
 
 

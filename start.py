@@ -15,6 +15,7 @@ class Start:
         self.start = None
         self.end = None
         self.compte = 0
+        self.moyenne = 0
      
         
     def getStart(self,start):
@@ -77,6 +78,8 @@ class Start:
 
                         ant = Fourmi(self.start)
                         algo = Algo()
+
+                       
                         
                         
                         
@@ -102,12 +105,14 @@ class Start:
                                 
                                 
                                 algo.listeFourmis[i].getVoisins(self.ROWS, self.grid)
-                                for fourmi in range(len(algo.listeFourmis)):
+                                #for fourmi in range(len(algo.listeFourmis)):
                                     
-                                    bestNode = algo.SelectNextEdge(algo.listeFourmis[i].getListeVoisins(), algo.listeFourmis[fourmi])
+                                bestNode = algo.SelectNextEdge(algo.listeFourmis[i].getListeVoisins(), algo.listeFourmis[i])
                                 
                                 algo.listeFourmis[i].move(bestNode)
+
                                 bestNode.pheromone = bestNode.pheromone + 1
+                                
                                 self.compte = self.compte + 1
                                 algo.listeFourmis[i].listeVoisins.clear()
                             
@@ -117,7 +122,27 @@ class Start:
                                 
                                 self.grid_c.draw(self.win, self.grid, self.ROWS, self.WIDTH)
                                 #self.grid[bestNode.col][bestNode.row].make_fourmis()
-                                
+
+                            if len(algo.listeFourmis[i].noeudVisite) < 200 and len(algo.listeFourmis[i].noeudVisite) > 100 :
+                                for noeudPheromone in range(len(algo.listeFourmis[i].noeudVisite)):
+                                    algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone = algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone + 2
+                            
+                            if len(algo.listeFourmis[i].noeudVisite) < 100 and len(algo.listeFourmis[i].noeudVisite) > 50 :
+                                for noeudPheromone in range(len(algo.listeFourmis[i].noeudVisite)):
+                                    algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone = algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone + 4
+
+                            if len(algo.listeFourmis[i].noeudVisite) < 20 and len(algo.listeFourmis[i].noeudVisite) > 15:
+                                for noeudPheromone in range(len(algo.listeFourmis[i].noeudVisite)):
+                        
+                                    algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone = algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone + 10
+                            
+                            if len(algo.listeFourmis[i].noeudVisite) < 10:
+                                for noeudPheromone in range(len(algo.listeFourmis[i].noeudVisite)):
+                                    algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone = algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone + 1000
+
+
+                            
+
                                 #time.sleep(0.05)
                                 
                                 #algo.algorithm(lambda: self.grid_c.draw(self.win, self.grid, self.ROWS, self.WIDTH), self.grid, self.start, self.end)
@@ -128,12 +153,16 @@ class Start:
                             print("compte",self.compte)
                             print("noeud",len(algo.listeFourmis[i].noeudVisite))
                             
-                            print(self.end.pheromone)
+                            self.moyenne = self.compte + self.moyenne 
+                            self.compte = 0
+                            
+                            """
 
                             for noeud in range(len(algo.listeFourmis[i].noeudVisite)):
                                 #evaporation des pheromones
                                 algo.listeFourmis[i].noeudVisite[noeud].pheromone = 1 - 0.5
-                            self.compte = 0
+                            """
+                        print("moyenne",self.moyenne/200)  
                         
 
                     if event.key == pygame.K_c:
