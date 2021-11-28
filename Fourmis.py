@@ -30,15 +30,20 @@ class Fourmi:
 
     #droite, gauche, en bas, en haut
     def getVoisins(self, gridWith, grid):
+
         
         #Voisin de droite
         if self.getPosX() + 1 > gridWith -1:
             self.listeVoisins.append(None) 
+        elif grid[self.posX+1][self.posY].isBlack():
+             self.listeVoisins.append(None)
         else:
             self.listeVoisins.append(grid[self.posX+1][self.posY])
 
         #Voisin de gauche
         if self.getPosX()-1 <  0:
+            self.listeVoisins.append(None)
+        elif grid[self.posX-1][self.posY].isBlack():
             self.listeVoisins.append(None)
         else:
             self.listeVoisins.append(grid[self.posX-1][self.posY])
@@ -46,11 +51,15 @@ class Fourmi:
         #Voisin d'en bas
         if self.getPosY()+1 > gridWith -1:
             self.listeVoisins.append(None)
+        elif grid[self.posX][ self.posY+1].isBlack():
+            self.listeVoisins.append(None)
         else:
             self.listeVoisins.append(grid[self.posX][ self.posY+1])
 
         #Voisin d'en haut
         if self.getPosY()-1 < 0:
+            self.listeVoisins.append(None)
+        elif grid[self.posX][self.posY-1].isBlack():
             self.listeVoisins.append(None)
         else:
             self.listeVoisins.append(grid[self.posX][self.posY-1])

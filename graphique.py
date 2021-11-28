@@ -34,6 +34,13 @@ class Spot:
     def get_pos(self):
         return self.row, self.col
 
+    def isBlack(self):
+
+        if self.color == BLACK:
+            return True
+        
+        return False
+
     def getXpos(self):
         return self.row
     

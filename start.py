@@ -16,6 +16,8 @@ class Start:
         self.end = None
         self.compte = 0
         self.moyenne = 0
+        self.obstacle = []
+        self.spotFourmis =  None
      
         
     def getStart(self,start):
@@ -41,22 +43,20 @@ class Start:
                     row, col = self.grid_c.get_clicked_pos(pos, self.ROWS, self.WIDTH)
                     spot = self.grid[row][col]
                     if not self.start and spot != self.end:
-                        
                         self.start = spot
                         #self.fourmis = spot #!
-                        
                         #self.getStart(spot)
                         self.start.make_start()
                         #self.fourmis.make_fourmis()
-                    
-                
 
                     elif not self.end and spot != self.start:
                         self.end = spot
                         self.end.make_end()
 
                     elif spot != self.end and spot != self.start:
-                        spot.make_barrier()
+                        self.obstacle.append(spot)
+                        for spots in range(len(self.obstacle)):
+                            self.obstacle[spots].make_barrier()
 
                 elif pygame.mouse.get_pressed()[2]:  # RIGHT
                     pos = pygame.mouse.get_pos()
@@ -117,8 +117,18 @@ class Start:
                                 algo.listeFourmis[i].listeVoisins.clear()
                             
                                 algo.setVisited(algo.listeFourmis[i],bestNode)
-                                spotFourmis = self.grid[algo.listeFourmis[i].posX][algo.listeFourmis[i].posY] 
-                                spotFourmis.make_fourmis()
+                                self.spotFourmis = self.grid[algo.listeFourmis[i].posX][algo.listeFourmis[i].posY] 
+
+                                for spots in range(len(self.obstacle)):
+                                    self.obstacle[spots].make_barrier()
+                                    
+                                self.spotFourmis.make_fourmis()
+
+                                self.start.make_start()
+                                self.end.make_end()
+                                
+                                
+
                                 
                                 self.grid_c.draw(self.win, self.grid, self.ROWS, self.WIDTH)
                                 #self.grid[bestNode.col][bestNode.row].make_fourmis()
