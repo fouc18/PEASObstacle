@@ -15,6 +15,7 @@ class Start:
         self.start = None
         self.end = None
         self.compte = 0
+        self.compte2 = 0
         self.moyenne = 0
         self.obstacle = []
         self.spotFourmis =  None
@@ -88,7 +89,7 @@ class Start:
                         #print("fourmi run", algo.listeFourmis[0].noeudVisite)
                         #print(ant.posX)
                        # ant.getVoisins(self.WIDTH, self.grid)
-                        for i in range(200):
+                        for i in range(800):
                            
                            
                             for row in range(len(self.grid)):
@@ -101,7 +102,7 @@ class Start:
                             ant = Fourmi(self.start)
                             algo.listeFourmis.append(ant)
 
-                            while algo.listeFourmis[i].getPosX() != self.end.getXpos() or algo.listeFourmis[i].getPosY() != self.end.getYpos():
+                            while ( ( algo.listeFourmis[i].getPosX() != self.end.getXpos() ) or ( algo.listeFourmis[i].getPosY() ) != ( self.end.getYpos() ) ) and self.compte < 800:
                                 
                                 
                                 algo.listeFourmis[i].getVoisins(self.ROWS, self.grid)
@@ -133,22 +134,40 @@ class Start:
                                 self.grid_c.draw(self.win, self.grid, self.ROWS, self.WIDTH)
                                 #self.grid[bestNode.col][bestNode.row].make_fourmis()
 
-                            if len(algo.listeFourmis[i].noeudVisite) < 200 and len(algo.listeFourmis[i].noeudVisite) > 100 :
+                            
+
+                            algo.listeFourmis[i].noeudVisite = list(dict.fromkeys(algo.listeFourmis[i].noeudVisite))
+
+                          
+                            if i > 1:
+                                for noeudPheromone in range(len(algo.listeFourmis[i].noeudVisite)):
+                                    if self.compte < self.compte2:
+                                        algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone = algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone + 200
+                            """if len(algo.listeFourmis[i].noeudVisite) < 200 and len(algo.listeFourmis[i].noeudVisite) > 100 :
+
                                 for noeudPheromone in range(len(algo.listeFourmis[i].noeudVisite)):
                                     algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone = algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone + 2
-                            
-                            if len(algo.listeFourmis[i].noeudVisite) < 100 and len(algo.listeFourmis[i].noeudVisite) > 50 :
+                               """
+
+
+                            """if len(algo.listeFourmis[i].noeudVisite) < 25 and len(algo.listeFourmis[i].noeudVisite) > 15 :
                                 for noeudPheromone in range(len(algo.listeFourmis[i].noeudVisite)):
                                     algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone = algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone + 4
 
-                            if len(algo.listeFourmis[i].noeudVisite) < 20 and len(algo.listeFourmis[i].noeudVisite) > 15:
+                            elif len(algo.listeFourmis[i].noeudVisite) < 15 and len(algo.listeFourmis[i].noeudVisite) > 10:
                                 for noeudPheromone in range(len(algo.listeFourmis[i].noeudVisite)):
                         
                                     algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone = algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone + 10
                             
-                            if len(algo.listeFourmis[i].noeudVisite) < 10:
+                            elif len(algo.listeFourmis[i].noeudVisite) < 10:
                                 for noeudPheromone in range(len(algo.listeFourmis[i].noeudVisite)):
-                                    algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone = algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone + 1000
+                                    algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone = algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone + 10000
+                            else:
+                                for noeudPheromone in range(len(algo.listeFourmis[i].noeudVisite)):
+                                    algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone = algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone + 0.5
+                            """
+                            
+
 
 
                             
@@ -164,6 +183,7 @@ class Start:
                             print("noeud",len(algo.listeFourmis[i].noeudVisite))
                             
                             self.moyenne = self.compte + self.moyenne 
+                            self.compte2 = self.compte
                             self.compte = 0
                             
                             """

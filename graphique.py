@@ -23,10 +23,11 @@ class Spot:
         self.neighbors = []
         self.width = width
         self.total_rows = total_rows
-        self.pheromone = 0
+        self.pheromone = 1
         self.visited = False
         #Ajouter le cout de tous les spots
         self.cost = 1
+        self.passed = False
 
     def __str__(self): 
         return '%s, %a ' %(self.row, self.col)

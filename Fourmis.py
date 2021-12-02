@@ -5,9 +5,9 @@ class Fourmi:
         self.posX = start.row
         self.posY = start.col
         self.noeudVisite = []
-        self.data = []
-        self.deltaT = 1
-        self.listePheromone = 0
+      
+       
+       
         self.listeVoisins = []
     
     def getPosY(self):
@@ -39,9 +39,10 @@ class Fourmi:
              self.listeVoisins.append(None)
         else:
             self.listeVoisins.append(grid[self.posX+1][self.posY])
-
+        
         #Voisin de gauche
         if self.getPosX()-1 <  0:
+            
             self.listeVoisins.append(None)
         elif grid[self.posX-1][self.posY].isBlack():
             self.listeVoisins.append(None)

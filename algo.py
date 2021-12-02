@@ -11,9 +11,9 @@ class Algo:
 
         self.listeFourmis = []
         #Doit etre compris entre 0 et 1
-        self.influenceDesPheromones = 10
-        self.addData = 10
-        
+        self.influenceDesPheromones = 2000000
+        self.addData = 0
+        self.randomList = []
 
 
 
@@ -41,13 +41,8 @@ class Algo:
         
         #??? lenght = C(V-1)
         time = 0
-        for fourmis in range(len(self.listeFourmis)):
+        
 
-            self.reset(grid, self.listeFourmis[fourmis])
-            self.setRun(self.listeFourmis[fourmis])
-            self.setNode(self.listeFourmis[fourmis], s)
-            self.setVisited(self.listeFourmis[fourmis], s)
-            self.add(time, self.listeFourmis[fourmis])
 
     """
     Noeud: noeud
@@ -57,6 +52,7 @@ class Algo:
     return: Le prochain noeud choisi
     """
     def SelectNextEdge(self, liste, fourmis):
+        
 
         if liste is not None:
                 best = -1
@@ -64,15 +60,16 @@ class Algo:
 
         for nodes in range(len(liste)):
         #Verifi si le prochain noeud n'est pas en dehors du tableau
-            
-              
+ 
             #Si le noeud n'a pas encore ete visite
 
             if liste[nodes] is not None :
 
-                if liste[nodes].visited == False and liste[nodes].isBlack() is not True:
+                self.randomList.append(liste[nodes])
 
-                        print(liste[nodes].color)
+
+
+                if liste[nodes].isBlack() is not True:
 
                         current = self.ComputeCoefficient(liste[nodes], fourmis)
 
@@ -81,12 +78,11 @@ class Algo:
                             best = current
                        
                             result = liste[nodes]
-
-                        elif current is best and random.uniform(0,1) > 0.9:
                             
+                        elif current is best and random.uniform(0,1) > 0.7:
+
                             result = liste[nodes]
-                        print(liste[nodes].color)
-                    
+         
         return result
 
     #Retourne le cout d'un certain chemin
@@ -95,13 +91,13 @@ class Algo:
         return sum(fourmi.noeudVisite.cost)
 
     def calculEdgeCoefficient_prime(self):
-        return self.influenceDesPheromones 
+        return (1//self.influenceDesPheromones)**self.influenceDesPheromones 
 
     #Verifie la quantite de pheromone sur un noeud en prennant en compte
     #L'infleunce des pheromones et les donnees additionnelle
     def calculEdgeCoefficient(self, noeud):
         if noeud.visited == False:
-            return (noeud.pheromone * self.influenceDesPheromones)*(1+self.addData)
+            return (noeud.pheromone * self.influenceDesPheromones)+(1-self.influenceDesPheromones)
         
 
 
@@ -110,11 +106,12 @@ class Algo:
     """
     def ComputeCoefficient(self,noeud,fourmis):
         #Si le noeud n'a pas de pheromones, en ajouter 
-        if noeud.pheromone == 0:
+        if noeud.pheromone == 1:
             return self.calculEdgeCoefficient_prime()
         else:
-            if len(fourmis.getRun()) > 3:
-              
+           
+            if len(fourmis.getRun()) < 400:
+                
                 return 0
             else:
                 return self.calculEdgeCoefficient(noeud)
