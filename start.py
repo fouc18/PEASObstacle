@@ -1,8 +1,10 @@
+
+
 import pygame
 from graphique import Grid
 from algo import Algo
 from Fourmis import Fourmi
-import time
+
 
 class Start:
 
@@ -15,186 +17,148 @@ class Start:
         self.start = None
         self.end = None
         self.compte = 0
-        self.compte2 = 0
-        self.moyenne = 0
         self.obstacle = []
         self.spotFourmis =  None
-     
         
-    def getStart(self,start):
-        
-        fourmis = Fourmi(start.col, start.row)
-
-        
-
-    
-
     def funcStart(self):
+        """
+        Cette fonction est la principale fonction du logiciel.
+        Elle relit toutes les autres classes et fonction du logiciel.
+        """
 
         run = True
+        #Demarage de la partie visuelle de l'application
         while run:
             self.grid_c.draw(self.win, self.grid, self.ROWS, self.WIDTH)
-            
+            #Verifi les evenements declanche par l'utilisateur
             for event in pygame.event.get():
+                #Si l'utilisateur clique sur la croix rouge le logiciel s'arrete
                 if event.type == pygame.QUIT:
                     run = False
-
+                #Si l'utilisateur clique sur son bouton gauche de sa souris
                 if pygame.mouse.get_pressed()[0]:  # LEFT
+                    #Verifie la position du curseur de l'utilisateur
                     pos = pygame.mouse.get_pos()
                     row, col = self.grid_c.get_clicked_pos(pos, self.ROWS, self.WIDTH)
+                    #Definit un cube avec la position du curseur de l'utilisateur
                     spot = self.grid[row][col]
+                    #Si ce n'est pas un cube de depart ou de fin
                     if not self.start and spot != self.end:
+                        #Definir le cube en tant que cube de depart
                         self.start = spot
-                        #self.fourmis = spot #!
-                        #self.getStart(spot)
+                        #Colorer le cube avec la couleur d'un cube de depart
                         self.start.make_start()
-                        #self.fourmis.make_fourmis()
-
+                        
+                    #Si le cube n;est pas un cube de depart ou de fin pour le 2e clic
                     elif not self.end and spot != self.start:
+                        #Definir le cube en tant que cube de fin
                         self.end = spot
+                        #Colorer le cube avec la couleur d'un cube de fin
                         self.end.make_end()
-
+                    #Si le cube n'est pas un cube de fin et un cube de depart
                     elif spot != self.end and spot != self.start:
+                        #definir le cube en tant que cube obstacle
                         self.obstacle.append(spot)
                         for spots in range(len(self.obstacle)):
                             self.obstacle[spots].make_barrier()
 
+                #Si l'utilisateur fait un clic droit avec sa souris
                 elif pygame.mouse.get_pressed()[2]:  # RIGHT
+                    #Entreposer la position du clic dans la variable pos
                     pos = pygame.mouse.get_pos()
+                    #Specifier la position de la souris relativement aux variables row et col du tableau
                     row, col = self.grid_c.get_clicked_pos(pos, self.ROWS, self.WIDTH)
                     spot = self.grid[row][col]
+                    #Definit le cube comme etant un cube de base
                     spot.reset()
                     if spot == self.start:
                         self.start = None
                     elif spot == self.end:
                         self.end = None
-
+                
+                #Si l'utilisateur clique sur la barre d'espace
+                #et que le point de depart et de fin sont defini
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE and self.start and self.end:
-                        #for row in self.grid:
-                            #for spot in row:
-                             #   spot.update_neighbors(self.grid)
-                        
-                       # spotFourmis.make_fourmis()
-
-                        ant = Fourmi(self.start)
+                             
+                        #Depart de l'algorithme
                         algo = Algo()
 
-                       
-                        
-                        
-                        
                         #Creer une liste de fourmis
-                        algo.Initialize(self.grid, self.start)
-                        #print("fourmi run", algo.listeFourmis[0].noeudVisite)
-                        #print(ant.posX)
-                       # ant.getVoisins(self.WIDTH, self.grid)
-                        for i in range(800):
-                           
-                           
-                            for row in range(len(self.grid)):
-                                
+                        for i in range(200):                       
+                            for row in range(len(self.grid)):                
                                 for col in range(len(self.grid)):
                                     if self.grid[row][col] != self.start or self.grid[row][col] != self.end:
                                         self.grid[row][col].reset()
-                            #time.sleep(0.005)
-                                
+                            #Definit le point de depart des fourmis
                             ant = Fourmi(self.start)
+                            #Ajoute la fourmi a la liste des fourmis
                             algo.listeFourmis.append(ant)
 
-                            while ( ( algo.listeFourmis[i].getPosX() != self.end.getXpos() ) or ( algo.listeFourmis[i].getPosY() ) != ( self.end.getYpos() ) ) and self.compte < 800:
+                            #On continu l'exploration si la fourmi n'a pas atteint le point d'arrive
+                            #Ou si elle n'a pas parcouru plus de 400 noeud dans son parcours
+                            while ( ( algo.listeFourmis[i].getPosX() != self.end.getXpos() ) or ( algo.listeFourmis[i].getPosY() ) != ( self.end.getYpos() ) ) and self.compte < 400:
                                 
-                                
-                                algo.listeFourmis[i].getVoisins(self.ROWS, self.grid)
-                                #for fourmi in range(len(algo.listeFourmis)):
+                                #On defini les obstacles
+                                for spots in range(len(self.obstacle)):
                                     
-                                bestNode = algo.SelectNextEdge(algo.listeFourmis[i].getListeVoisins(), algo.listeFourmis[i])
-                                
-                                algo.listeFourmis[i].move(bestNode)
+                                    self.obstacle[spots].make_barrier() 
 
-                                bestNode.pheromone = bestNode.pheromone + 1
-                                
+                                algo.listeFourmis[i].getVoisins(self.ROWS, self.grid)
+                                #On selectionne le meilleur noeud dans la liste des noeuds voisins de la fourmi      
+                                bestNode = algo.SelectNextEdge(algo.listeFourmis[i].getListeVoisins(), algo.listeFourmis[i], i)
+                                #La fourmi bouge au prochain noeud
+                                algo.listeFourmis[i].move(bestNode)
+                                #On ajoute un compte (pas de la fourmi)
                                 self.compte = self.compte + 1
+                                #On enleve les voisins de la liste des voisins de la fourmi
                                 algo.listeFourmis[i].listeVoisins.clear()
-                            
+                                #On defini le noeud actuel comme etant visite             
                                 algo.setVisited(algo.listeFourmis[i],bestNode)
+                                #On colore le noeud de la couleur des fourmis
                                 self.spotFourmis = self.grid[algo.listeFourmis[i].posX][algo.listeFourmis[i].posY] 
 
-                                for spots in range(len(self.obstacle)):
-                                    self.obstacle[spots].make_barrier()
-                                    
                                 self.spotFourmis.make_fourmis()
-
+                                #On colore le point de depart
                                 self.start.make_start()
+                                #On colore le point de fin
                                 self.end.make_end()
                                 
-                                
-
-                                
+                                self.end.pheromone = 1000000       
+                                #Actualisation des graphiques
                                 self.grid_c.draw(self.win, self.grid, self.ROWS, self.WIDTH)
-                                #self.grid[bestNode.col][bestNode.row].make_fourmis()
-
+                                
                             
-
+                            #On supprime les doublons des noeud visites de la fourmi
                             algo.listeFourmis[i].noeudVisite = list(dict.fromkeys(algo.listeFourmis[i].noeudVisite))
 
-                          
-                            if i > 1:
+                        #En fonction du compte (des pas de la fourmi) on ajoute des pheromones 
+                            if self.compte < 30 and self.compte > 20 :
                                 for noeudPheromone in range(len(algo.listeFourmis[i].noeudVisite)):
-                                    if self.compte < self.compte2:
-                                        algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone = algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone + 200
-                            """if len(algo.listeFourmis[i].noeudVisite) < 200 and len(algo.listeFourmis[i].noeudVisite) > 100 :
-
+                                   
+                                    algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone = algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone + 1
+                               
+                            if self.compte < 20 and self.compte > 15 :
+                              
                                 for noeudPheromone in range(len(algo.listeFourmis[i].noeudVisite)):
-                                    algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone = algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone + 2
-                               """
-
-
-                            """if len(algo.listeFourmis[i].noeudVisite) < 25 and len(algo.listeFourmis[i].noeudVisite) > 15 :
+                                    algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone = algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone + 100
+                           
+                            elif self.compte > 50:
                                 for noeudPheromone in range(len(algo.listeFourmis[i].noeudVisite)):
-                                    algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone = algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone + 4
-
-                            elif len(algo.listeFourmis[i].noeudVisite) < 15 and len(algo.listeFourmis[i].noeudVisite) > 10:
+                                    algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone = algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone + 0.2
+                            
+                            elif self.compte < 15 and self.compte > 10:
+                              
                                 for noeudPheromone in range(len(algo.listeFourmis[i].noeudVisite)):
                         
-                                    algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone = algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone + 10
-                            
-                            elif len(algo.listeFourmis[i].noeudVisite) < 10:
+                                    algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone = algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone + 500 
+                            elif self.compte < 7:
+                               
                                 for noeudPheromone in range(len(algo.listeFourmis[i].noeudVisite)):
                                     algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone = algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone + 10000
-                            else:
-                                for noeudPheromone in range(len(algo.listeFourmis[i].noeudVisite)):
-                                    algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone = algo.listeFourmis[i].noeudVisite[noeudPheromone].pheromone + 0.5
-                            """
-                            
-
-
-
-                            
-
-                                #time.sleep(0.05)
-                                
-                                #algo.algorithm(lambda: self.grid_c.draw(self.win, self.grid, self.ROWS, self.WIDTH), self.grid, self.start, self.end)
-                            print("FINI !")
-                            
-                            
-                            print("fourmi run", algo.listeFourmis[i].noeudVisite)
-                            print("compte",self.compte)
-                            print("noeud",len(algo.listeFourmis[i].noeudVisite))
-                            
-                            self.moyenne = self.compte + self.moyenne 
-                            self.compte2 = self.compte
+                                                   
                             self.compte = 0
                             
-                            """
-
-                            for noeud in range(len(algo.listeFourmis[i].noeudVisite)):
-                                #evaporation des pheromones
-                                algo.listeFourmis[i].noeudVisite[noeud].pheromone = 1 - 0.5
-                            """
-                        print("moyenne",self.moyenne/200)  
-                        
-
                     if event.key == pygame.K_c:
                         self.start = None
                         self.end = None
